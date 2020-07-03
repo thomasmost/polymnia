@@ -2,7 +2,8 @@
   "name": "polymnia",
   "version": "1.0.1",
   "description": "a strictly typed API wrapper for datamuse",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -14,7 +15,7 @@
     "test": "jest --config jestconfig.json",
     "version" : "npm run format && git add -A src"
   },
-  "author": "",
+  "author": "@thomasmost",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^26.0.3",
@@ -31,5 +32,10 @@
   ],
   "dependencies": {
     "node-fetch": "^2.6.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasmost/polymnia.git"
+  },
+  "keywords": ["datamuse", "api", "dictionary"]
 }
