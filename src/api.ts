@@ -1,22 +1,21 @@
 import * as querystring from 'querystring';
 
-import { makeRequest } from "./make_request"
+import { makeRequest } from './make_request';
 
-
-type apiType = 'words' | 'suggest'
+type apiType = 'words' | 'suggest';
 
 const apiEndpoint: Record<apiType, string> = {
   words: '/words',
-  suggest: '/sug'
-}
+  suggest: '/sug',
+};
 
 export const suggest = async (input: string) => {
   if (!input || input.length === 0) {
-    throw Error('Must specify an input string')
+    throw Error('Must specify an input string');
   }
-  const uri = `${apiEndpoint.suggest}?s=${input}`
+  const uri = `${apiEndpoint.suggest}?s=${input}`;
   return makeRequest(uri);
-}
+};
 
 type WordsApiParams = {
   meansLike?: string;
@@ -26,38 +25,22 @@ type WordsApiParams = {
   startsWith?: string;
   endsWith?: string;
   wildCount?: number;
-}
+};
 
-type WordsQuery =
-  'ml'
-| 'sl'
-| 'sp'
-| 'rel_rhy'
-| 'rel_jjb'
-| 'rel_jja'
-| 'lc'
-| 'rel_trg';
+type WordsQuery = 'ml' | 'sl' | 'sp' | 'rel_rhy' | 'rel_jjb' | 'rel_jja' | 'lc' | 'rel_trg';
 
 export const words = async (params: WordsApiParams) => {
   if (!params || Object.keys(params).length === 0) {
-    throw Error('Must specify at least one parameter')
+    throw Error('Must specify at least one parameter');
   }
-  const {
-    rawQuery,
-    meansLike,
-    rhymesWith,
-    soundsLike,
-    startsWith,
-    endsWith,
-    wildCount
-  } = params;
+  const { rawQuery, meansLike, rhymesWith, soundsLike, startsWith, endsWith, wildCount } = params;
 
   if (rawQuery) {
     if (Object.keys(params).length > 1) {
-      throw Error('Cannot specify any additional params when making a rawQuery')
+      throw Error('Cannot specify any additional params when making a rawQuery');
     }
-    const uri = `${apiEndpoint.words}${rawQuery}`
-    return makeRequest(uri)
+    const rawUri = `${apiEndpoint.words}${rawQuery}`;
+    return makeRequest(rawUri);
   }
   const query: Partial<Record<WordsQuery, string>> = {};
 
@@ -81,8 +64,8 @@ export const words = async (params: WordsApiParams) => {
         wild += '?';
       }
     }
-    query.sp = `${startsWith || ''}${wild}${endsWith || ''}`
+    query.sp = `${startsWith || ''}${wild}${endsWith || ''}`;
   }
   const uri = apiEndpoint.words + querystring.stringify(query);
   return makeRequest(uri);
-}
+};
