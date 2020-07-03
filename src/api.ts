@@ -17,8 +17,14 @@ export const suggest = async (input: string) => {
   return makeRequest(uri);
 };
 
+type Metadata = 'definitions' | 'parts_of_speech' | 'syllables' | 'pronunciation' | 'frequency';
+
 type WordsApiParams = {
+  leftContext?: string;
+  rightContext?: string;
+  maxResults?: number;
   meansLike?: string;
+  metadata?: Partial<Record<Metadata, boolean>>;
   oftenFollows?: string;
   oftenDescribedAs?: string;
   oftenDescribes?: string;
@@ -31,18 +37,22 @@ type WordsApiParams = {
   wildCount?: number;
 };
 
-type WordsQuery = 'ml' | 'sl' | 'sp' | 'rel_rhy' | 'rel_jjb' | 'rel_jja' | 'lc' | 'rel_trg' | 'topics';
+type WordsQuery = 'ml' | 'max' | 'sl' | 'sp' | 'rel_rhy' | 'rel_jjb' | 'rel_jja' | 'lc' | 'rc' | 'rel_trg' | 'topics' | 'md';
 
 export const words = async (params: WordsApiParams) => {
   if (!params || Object.keys(params).length === 0) {
     throw Error('Must specify at least one parameter');
   }
   const {
-    rawQuery,
+    leftContext,
+    rightContext,
+    maxResults,
+    metadata,
     meansLike,
     oftenDescribedAs,
     oftenDescribes,
     oftenFollows,
+    rawQuery,
     rhymesWith,
     soundsLike,
     startsWith,
@@ -107,6 +117,39 @@ export const words = async (params: WordsApiParams) => {
       }
       query.topics = topics.join(',');
     }
+  }
+  if (leftContext) {
+    query.lc = leftContext;
+  }
+  if (rightContext) {
+    query.rc = rightContext;
+  }
+  if (metadata) {
+    let md = '';
+    if (metadata.definitions) {
+      md += 'd';
+    }
+    if (metadata.parts_of_speech) {
+      md += 'p';
+    }
+    if (metadata.syllables) {
+      md += 's';
+    }
+    if (metadata.pronunciation) {
+      md += 'r';
+    }
+    if (metadata.frequency) {
+      md += 'f';
+    }
+    if (md.length) {
+      query.md = md;
+    }
+  }
+  if (maxResults) {
+    if (maxResults > 1000) {
+      throw Error('May not request more than 1000 results');
+    }
+    query.max = maxResults;
   }
   const uri = apiEndpoint.words + querystring.unescape(querystring.stringify(query));
   return makeRequest(uri);
