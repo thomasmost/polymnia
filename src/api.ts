@@ -38,18 +38,18 @@ type WordsApiParams = {
 };
 
 type WordsQuery =
-  | 'ml'
+  | 'lc'
   | 'max'
+  | 'md'
+  | 'ml'
+  | 'rc'
+  | 'rel_jja'
+  | 'rel_jjb'
+  | 'rel_rhy'
+  | 'rel_trg'
   | 'sl'
   | 'sp'
-  | 'rel_rhy'
-  | 'rel_jjb'
-  | 'rel_jja'
-  | 'lc'
-  | 'rc'
-  | 'rel_trg'
-  | 'topics'
-  | 'md';
+  | 'topics';
 
 export const words = async (params: WordsApiParams) => {
   if (!params || Object.keys(params).length === 0) {
