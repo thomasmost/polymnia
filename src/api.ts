@@ -5,15 +5,15 @@ import { makeRequest } from './make_request';
 type apiType = 'words' | 'suggest';
 
 const apiEndpoint: Record<apiType, string> = {
-  words: '/words',
-  suggest: '/sug',
+  words: '/words?',
+  suggest: '/sug?',
 };
 
 export const suggest = async (input: string) => {
   if (!input || input.length === 0) {
     throw Error('Must specify an input string');
   }
-  const uri = `${apiEndpoint.suggest}?s=${input}`;
+  const uri = `${apiEndpoint.suggest}s=${input}`;
   return makeRequest(uri);
 };
 
@@ -66,6 +66,6 @@ export const words = async (params: WordsApiParams) => {
     }
     query.sp = `${startsWith || ''}${wild}${endsWith || ''}`;
   }
-  const uri = apiEndpoint.words + querystring.stringify(query);
+  const uri = apiEndpoint.words + querystring.unescape(querystring.stringify(query));
   return makeRequest(uri);
 };
