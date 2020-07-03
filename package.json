@@ -1,6 +1,6 @@
 {
   "name": "polymnia",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a strictly typed API wrapper for datamuse",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,12 +8,12 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "postversion" : "git push && git push --tags",
-    "prepare" : "npm run build",
-    "prepublishOnly" : "npm test && npm run lint",
-    "preversion" : "npm run lint",
+    "postversion": "git push && git push --tags",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
     "test": "jest --config jestconfig.json",
-    "version" : "npm run format && git add -A src"
+    "version": "npm run format && git add -A src"
   },
   "author": "@thomasmost",
   "license": "ISC",
@@ -37,5 +37,9 @@
     "type": "git",
     "url": "git+https://github.com/thomasmost/polymnia.git"
   },
-  "keywords": ["datamuse", "api", "dictionary"]
+  "keywords": [
+    "datamuse",
+    "api",
+    "dictionary"
+  ]
 }
