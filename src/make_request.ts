@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 type WordMatch = {
   word: string;
   score: number;
+  tags?: [];
 };
 
 export const makeRequest = async (postUri: string) => {
