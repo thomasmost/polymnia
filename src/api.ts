@@ -25,7 +25,6 @@ type WordsApiParams = {
   maxResults?: number;
   meansLike?: string;
   metadata?: Partial<Record<Metadata, boolean>>;
-  oftenFollows?: string;
   oftenDescribedAs?: string;
   oftenDescribes?: string;
   rawQuery?: string;
@@ -63,7 +62,6 @@ export const words = async (params: WordsApiParams) => {
     meansLike,
     oftenDescribedAs,
     oftenDescribes,
-    oftenFollows,
     rawQuery,
     rhymesWith,
     soundsLike,
@@ -104,7 +102,7 @@ export const words = async (params: WordsApiParams) => {
     }
     query.sp = `${startsWith || ''}${wild}${endsWith || ''}`;
   }
-  if (oftenDescribes || oftenDescribedAs || oftenFollows) {
+  if (oftenDescribes || oftenDescribedAs) {
     let usageQueries = 0;
     if (oftenDescribedAs) {
       query.rel_jja = oftenDescribedAs;
@@ -114,12 +112,8 @@ export const words = async (params: WordsApiParams) => {
       query.rel_jjb = oftenDescribes;
       usageQueries++;
     }
-    if (oftenFollows) {
-      query.lc = oftenFollows;
-      usageQueries++;
-    }
     if (usageQueries > 1) {
-      throw Error('You may only specify one usage query at a time (oftenDescribedAs, oftenDescribes, oftenFollows)');
+      throw Error('You may only specify one usage query at a time (oftenDescribedAs, oftenDescribes)');
     }
   }
   if (topics) {
