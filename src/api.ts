@@ -37,7 +37,19 @@ type WordsApiParams = {
   wildCount?: number;
 };
 
-type WordsQuery = 'ml' | 'max' | 'sl' | 'sp' | 'rel_rhy' | 'rel_jjb' | 'rel_jja' | 'lc' | 'rc' | 'rel_trg' | 'topics' | 'md';
+type WordsQuery =
+  | 'ml'
+  | 'max'
+  | 'sl'
+  | 'sp'
+  | 'rel_rhy'
+  | 'rel_jjb'
+  | 'rel_jja'
+  | 'lc'
+  | 'rc'
+  | 'rel_trg'
+  | 'topics'
+  | 'md';
 
 export const words = async (params: WordsApiParams) => {
   if (!params || Object.keys(params).length === 0) {
