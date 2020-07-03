@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 type WordMatch = {
   word: string;
   score: number;
-}
+};
 
 export const makeRequest = async (postUri: string) => {
   const response = await fetch(`https://api.datamuse.com/${postUri}`);
