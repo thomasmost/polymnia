@@ -161,7 +161,7 @@ export const words = async (params: WordsApiParams) => {
     if (maxResults > 1000) {
       throw Error('May not request more than 1000 results');
     }
-    query.max = maxResults;
+    query.max = maxResults.toString();
   }
   const uri = apiEndpoint.words + querystring.unescape(querystring.stringify(query));
   return makeRequest(uri);
