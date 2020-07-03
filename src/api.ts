@@ -19,21 +19,37 @@ export const suggest = async (input: string) => {
 
 type WordsApiParams = {
   meansLike?: string;
+  oftenFollows?: string;
+  oftenDescribedAs?: string;
+  oftenDescribes?: string;
   rawQuery?: string;
   rhymesWith?: string;
   soundsLike?: string;
   startsWith?: string;
   endsWith?: string;
+  topics?: string[];
   wildCount?: number;
 };
 
-type WordsQuery = 'ml' | 'sl' | 'sp' | 'rel_rhy' | 'rel_jjb' | 'rel_jja' | 'lc' | 'rel_trg';
+type WordsQuery = 'ml' | 'sl' | 'sp' | 'rel_rhy' | 'rel_jjb' | 'rel_jja' | 'lc' | 'rel_trg' | 'topics';
 
 export const words = async (params: WordsApiParams) => {
   if (!params || Object.keys(params).length === 0) {
     throw Error('Must specify at least one parameter');
   }
-  const { rawQuery, meansLike, rhymesWith, soundsLike, startsWith, endsWith, wildCount } = params;
+  const {
+    rawQuery,
+    meansLike,
+    oftenDescribedAs,
+    oftenDescribes,
+    oftenFollows,
+    rhymesWith,
+    soundsLike,
+    startsWith,
+    endsWith,
+    topics,
+    wildCount
+  } = params;
 
   if (rawQuery) {
     if (Object.keys(params).length > 1) {
@@ -65,6 +81,32 @@ export const words = async (params: WordsApiParams) => {
       }
     }
     query.sp = `${startsWith || ''}${wild}${endsWith || ''}`;
+  }
+  if (oftenDescribes || oftenDescribedAs || oftenFollows) {
+    let usageQueries = 0;
+    if (oftenDescribedAs) {
+      query.rel_jja = oftenDescribedAs;
+      usageQueries ++;
+    };
+    if (oftenDescribes) {
+      query.rel_jjb = oftenDescribes;
+      usageQueries ++;
+    };
+    if (oftenFollows) {
+      query.lc = oftenFollows;
+      usageQueries ++;
+    }
+    if (usageQueries > 1) {
+      throw Error('You may only specify one usage query at a time (oftenDescribedAs, oftenDescribes, oftenFollows)');
+    }
+  }
+  if (topics) {
+    if (topics.length >= 1) {
+      if (topics.length > 5) {
+        throw Error('No more than 5 topics may be specified')
+      }
+      query.topics = topics.join(',')
+    }
   }
   const uri = apiEndpoint.words + querystring.unescape(querystring.stringify(query));
   return makeRequest(uri);
