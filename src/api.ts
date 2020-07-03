@@ -48,7 +48,7 @@ export const words = async (params: WordsApiParams) => {
     startsWith,
     endsWith,
     topics,
-    wildCount
+    wildCount,
   } = params;
 
   if (rawQuery) {
@@ -86,15 +86,15 @@ export const words = async (params: WordsApiParams) => {
     let usageQueries = 0;
     if (oftenDescribedAs) {
       query.rel_jja = oftenDescribedAs;
-      usageQueries ++;
-    };
+      usageQueries++;
+    }
     if (oftenDescribes) {
       query.rel_jjb = oftenDescribes;
-      usageQueries ++;
-    };
+      usageQueries++;
+    }
     if (oftenFollows) {
       query.lc = oftenFollows;
-      usageQueries ++;
+      usageQueries++;
     }
     if (usageQueries > 1) {
       throw Error('You may only specify one usage query at a time (oftenDescribedAs, oftenDescribes, oftenFollows)');
@@ -103,9 +103,9 @@ export const words = async (params: WordsApiParams) => {
   if (topics) {
     if (topics.length >= 1) {
       if (topics.length > 5) {
-        throw Error('No more than 5 topics may be specified')
+        throw Error('No more than 5 topics may be specified');
       }
-      query.topics = topics.join(',')
+      query.topics = topics.join(',');
     }
   }
   const uri = apiEndpoint.words + querystring.unescape(querystring.stringify(query));

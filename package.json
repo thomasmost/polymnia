@@ -1,6 +1,6 @@
 {
   "name": "polymnia",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a strictly typed API wrapper for datamuse",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
